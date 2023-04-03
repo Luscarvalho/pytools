@@ -1,0 +1,8 @@
+# IDE
+.idea
+
+# Virtualenv
+venv
+
+# Python
+*.pyc
