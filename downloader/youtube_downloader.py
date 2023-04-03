@@ -1,8 +1,11 @@
 from pytube import YouTube
 
 
-def download_video(video_url, output_path):
+def download_video():
     try:
+        video_url = input("Digite a URL do vídeo: ")  # URL do vídeo a ser baixado
+        # video_url = "https://www.youtube.com/watch?v=p0s6-j7Hwm8"  # URL do vídeo a ser baixado
+        output_path = "downloader"  # Caminho onde o vídeo baixado será salvo
         # Cria um objeto YouTube para a URL fornecida
         youtube_video = YouTube(video_url)
 
