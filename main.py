@@ -12,7 +12,7 @@ if __name__ == "__main__":
     def tratar_opcao(opcao):
         if opcao == "1":
             print("Opção 1 selecionada")
-            download_video()
+            download()
         elif opcao == "2":
             print("Opção 2 selecionada")
         elif opcao == "3":

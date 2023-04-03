@@ -1,20 +1,71 @@
-from pytube import YouTube
+import pytube
 
 
-def download_video():
-    try:
-        video_url = input("Digite a URL do vídeo: ")  # URL do vídeo a ser baixado
-        # video_url = "https://www.youtube.com/watch?v=p0s6-j7Hwm8"  # URL do vídeo a ser baixado
-        output_path = "downloader"  # Caminho onde o vídeo baixado será salvo
-        # Cria um objeto YouTube para a URL fornecida
-        youtube_video = YouTube(video_url)
+def download():
+    def download_video(url):
+        yt = pytube.YouTube(url)
+        videos = yt.streams.filter(progressive=True)
 
-        # Seleciona a resolução mais alta disponível para o vídeo
-        video = youtube_video.streams.get_highest_resolution()
+        print("Selecione a qualidade de vídeo:")
+        for i, video in enumerate(videos):
+            print(f"{i + 1}. Resolução: {video.resolution}, FPS: {video.fps}")
 
-        # Baixa o vídeo para o caminho de saída especificado
-        video.download(output_path)
+        while True:
+            try:
+                opcao = int(input("Opção selecionada: "))
+                if opcao < 1 or opcao > len(videos):
+                    print("Opção inválida. Tente novamente.")
+                else:
+                    break
+            except ValueError:
+                print("Entrada inválida. Tente novamente.")
 
-        print(f"O vídeo {youtube_video.title} foi baixado com sucesso em {output_path}")
-    except Exception as e:
-        print(f"Ocorreu um erro ao tentar baixar o vídeo: {str(e)}")
+        video = videos[opcao - 1]
+        print(f"Baixando vídeo com resolução {video.resolution} e FPS {video.fps}...")
+
+        video.download(output_path="downloader/downloads/video")
+        print("Download concluído.")
+
+    def download_audio(url):
+        yt = pytube.YouTube(url)
+        audios = yt.streams.filter(only_audio=True)
+
+        print("Selecione a qualidade de áudio:")
+        for i, audio in enumerate(audios):
+            print(f"{i + 1}. Codec: {audio.audio_codec}, Bitrate: {audio.abr}")
+
+        while True:
+            try:
+                opcao = int(input("Opção selecionada: "))
+                if opcao < 1 or opcao > len(audios):
+                    print("Opção inválida. Tente novamente.")
+                else:
+                    break
+            except ValueError:
+                print("Entrada inválida. Tente novamente.")
+
+        audio = audios[opcao - 1]
+        print(f"Baixando áudio com codec {audio.audio_codec} e bitrate {audio.abr}...")
+
+        audio.download(output_path="downloader/downloads/audio")
+        print("Download concluído.")
+
+    url = input("Insira a URL do vídeo: ")
+    print("Selecione o tipo de download:")
+    print("1. Vídeo")
+    print("2. Áudio")
+
+    while True:
+        try:
+            opcao = int(input("Opção selecionada: "))
+            if opcao < 1 or opcao > 2:
+                print("Opção inválida. Tente novamente.")
+            else:
+                break
+        except ValueError:
+            print("Entrada inválida. Tente novamente.")
+
+    if opcao == 1:
+        download_video(url)
+    else:
+        download_audio(url)
